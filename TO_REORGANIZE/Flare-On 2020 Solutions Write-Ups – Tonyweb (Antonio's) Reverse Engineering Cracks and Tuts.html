@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html class="js" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+		<link rel="pingback" href="http://tonyweb.xyz/xmlrpc.php">
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Flare-On 2020 Solutions Write-Ups – Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts</title>
+<link rel="dns-prefetch" href="http://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link href="https://fonts.gstatic.com/" crossorigin="" rel="preconnect">
+<link rel="alternate" type="application/rss+xml" title="Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts » Feed" href="http://tonyweb.xyz/index.php/feed/">
+<link rel="alternate" type="application/rss+xml" title="Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts » Comments Feed" href="http://tonyweb.xyz/index.php/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts » Flare-On 2020 Solutions Write-Ups Comments Feed" href="http://tonyweb.xyz/index.php/2020/11/07/flare-on-2020-solutions-write-ups/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11.2.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11.2.0\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/tonyweb.xyz\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.1.8"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-theme-css" href="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/theme.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-fonts-css" href="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="genericons-css" href="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-style-css" href="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-block-style-css" href="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/blocks.css" type="text/css" media="all">
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='http://tonyweb.xyz/wp-content/themes/twentysixteen/css/ie.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='http://tonyweb.xyz/wp-content/themes/twentysixteen/css/ie8.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='http://tonyweb.xyz/wp-content/themes/twentysixteen/css/ie7.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<script type='text/javascript' src='http://tonyweb.xyz/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<script type="text/javascript" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/jquery.js"></script>
+<script type="text/javascript" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/jquery-migrate.js"></script>
+<link rel="https://api.w.org/" href="http://tonyweb.xyz/index.php/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://tonyweb.xyz/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://tonyweb.xyz/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Cracking .NET Components" href="http://tonyweb.xyz/index.php/2020/11/07/cracking-net-components/">
+<link rel="next" title="Sparklabs Viscosity OpenVPN Client v1.5-1.8.4 Keygen by TonyWeb" href="http://tonyweb.xyz/index.php/2020/11/08/sparklabs-viscosity-openvpn-client-v1-5-1-8-4-keygen/">
+<meta name="generator" content="WordPress 5.1.8">
+<link rel="canonical" href="http://tonyweb.xyz/index.php/2020/11/07/flare-on-2020-solutions-write-ups/">
+<link rel="shortlink" href="http://tonyweb.xyz/?p=27">
+<link rel="alternate" type="application/json+oembed" href="http://tonyweb.xyz/index.php/wp-json/oembed/1.0/embed?url=http%3A%2F%2Ftonyweb.xyz%2Findex.php%2F2020%2F11%2F07%2Fflare-on-2020-solutions-write-ups%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://tonyweb.xyz/index.php/wp-json/oembed/1.0/embed?url=http%3A%2F%2Ftonyweb.xyz%2Findex.php%2F2020%2F11%2F07%2Fflare-on-2020-solutions-write-ups%2F&amp;format=xml">
+<style></style></head>
+
+<body class="post-template-default single single-post postid-27 single-format-standard wp-custom-logo wp-embed-responsive">
+<div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					<a href="http://tonyweb.xyz/" class="custom-logo-link" rel="home" itemprop="url"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/tonyweb-photo-thumb-2681.png" class="custom-logo" alt="Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts" itemprop="logo" width="100" height="100"></a>
+											<p class="site-title"><a href="http://tonyweb.xyz/" rel="home">Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts</a></p>
+												<p class="site-description">Want to learn unpacking … but I'm too stupid :P</p>
+									</div><!-- .site-branding -->
+
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-27" class="post-27 post type-post status-publish format-standard hentry category-uncategorized tag-antonio tag-beta-bbs tag-flare-on tag-tonyweb">
+	<header class="entry-header">
+		<h1 class="entry-title">Flare-On 2020 Solutions Write-Ups</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		
+<p>This  contains write-ups with my solutions for Flare-On 2020 that was hosted by FireEye from September 11 to October 23 2020.</p>
+
+
+
+<p> Download the binaries <a href="http://flare-on.com/files/Flare-On7_Challenges.zip">here</a>. </p>
+
+
+
+<h2>Table of Contents</h2>
+
+
+
+<ul><li>1 – <a href="#Fidler">Fidler</a></li><li>2 – <a href="#garbage">garbage</a></li><li>3 – <a href="#Wednesday">wednesday</a></li><li>4 –<a href="#report"> report</a></li><li>5 – <a href="#TKApp">TKApp</a></li><li>6 – codeit</li><li>7 – re_crowd</li><li>8 – Aardvark</li><li>9 – crackinstaller</li><li>10 – break</li><li>11 – rabbithole</li></ul>
+
+
+
+<h1 id="Fidler">1 – Fidler</h1>
+
+
+
+<p><strong>Time spent:</strong> around 10 minutes</p>
+
+
+
+<p><strong>Tools used:</strong> Python</p>
+
+
+
+<p>The first challenge of the anual flare-on CTF always starts 
+relatively easy and this year is no exception. We are given a game 
+written in Python, and a message that tells us to beat the game to 
+reveal the flag.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/1#the-password-screen"></a>The password screen</h2>
+
+
+
+<p>Starting up the main python script <code>fidler.py</code> prompts us with the following password screen:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/1/password.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/password.png" alt="Figure 1"></a></figure>
+
+
+
+<p>The first question that you should ask yourself here, is which parts 
+of the code is responsible for prompting this dialog, and checking 
+whether the input password is correct or not? Let’s have a look at the 
+python script. Below are the relevant parts:</p>
+
+
+
+<pre class="wp-block-preformatted">def password_check(input):
+    altered_key = 'hiptu'
+    key = ''.join([chr(ord(x) - 1) for x in altered_key])
+    return input == key
+
+def password_screen():
+    # ...
+
+    while not done:
+        # ...
+
+        if input_box.submitted:
+            if password_check(input_box.text):
+                return True
+            else:
+                return False
+
+        # ...
+
+# ...
+
+def main():
+    if password_screen():
+        game_screen()
+    else:
+        password_fail_screen()
+    pg.quit()
+
+if __name__ == '__main__':
+    main()</pre>
+
+
+
+<p>Immediately we can see that the script does very little to protect itself. We can see that <code>main</code> first shows the password screen, and if that succeeds, then the main game screen is opened. Looking into <code>password_screen</code>, we can see that the contents of the <code>input_box</code> is fed into <code>password_check</code>, which returns <code>true</code>
+ if the input text is some calculated value. Although we cannot see the 
+key directly, we can quickly find out what the contents should be, by 
+simply copying the password check code to a new file, and changing the 
+last <code>return</code>  with a <code>print</code>.</p>
+
+
+
+<pre class="wp-block-preformatted">altered_key = 'hiptu'
+key = ''.join([chr(ord(x) - 1) for x in altered_key])
+print(key)</pre>
+
+
+
+<p>This gives us:</p>
+
+
+
+<pre class="wp-block-code"><code>ghost
+</code></pre>
+
+
+
+<p>Typing this into the real game results in unlocking the actual game.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/1#beating-the-game"></a>Beating the game</h2>
+
+
+
+<p>The main game is a simple autoclicker game, and it tells use to get to 100 billion coins to win.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/1/main.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/main.png" alt="Figure 2"></a></figure>
+
+
+
+<p>Obviously, we don’t want to wait for 100 billion coins, so let’s 
+figure out how we can trick the game into thinking that we already have 
+the required amount of coins.</p>
+
+
+
+<p>Looking into the games main screen code, we can see something interesting:</p>
+
+
+
+<pre class="wp-block-preformatted">ef game_screen():
+    # ...
+
+    while not done:
+        target_amount = (2**36) + (2**35)
+        if current_coins &gt; (target_amount - 2**20):
+            while current_coins &gt;= (target_amount + 2**20):
+                current_coins -= 2**20
+            victory_screen(int(current_coins / 10**8))
+            return
+        # ...</pre>
+
+
+
+<p>In the above, we can see that <code>victory_screen</code> is called when <code>current_coins &gt; (target_amount - 2**20)</code>. To trick the game into thinking we already won, we can insert the following line just before the if statement:</p>
+
+
+
+<pre class="wp-block-preformatted">current_coins = target_amount</pre>
+
+
+
+<p>Running the app one final time, automatically reveals the flag:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/1/solution.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/solution_002.png" alt="Figure 3"></a></figure>
+
+
+
+<h1 id="garbage">2 – garbage</h1>
+
+
+
+<p><strong>Time spent:</strong> around 20 minutes</p>
+
+
+
+<p><strong>Tools used:</strong> CFF Explorer, HxD, UPX</p>
+
+
+
+<p>The second challenge of flare-on 2020 can either be very easy, or 
+very difficult if you don’t know what you should be looking for. You are
+ given a file called <code>garbage.exe</code>, along with a message that
+ tells you the executable was recovered using digital forensics, but is 
+incomplete. The task is to repair it and acquire the flag.</p>
+
+
+
+<p>I heard a lot of people got stuck on this one, which is very 
+understandable if you are not very familiar with the PE file format. 
+Let’s go through it step-by-step.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/2#orientation"></a>Orientation</h2>
+
+
+
+<p>The first thing to try, is to just run it. As you might have guessed, this does not work.</p>
+
+
+
+<p>Opening it up in a tool such as CFF explorer, however, gives us some 
+clues. Looking at the sections of the executable, we can see the names <code>UPX0</code> and <code>UPX1</code>:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/cff1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/cff1.png" alt="Figure 1"></a></figure>
+
+
+
+<p>UPX stands for the <strong>U</strong>ltimate <strong>P</strong>acker for e<strong>X</strong>ecutables, and is a well-known packer that attempts to compress an executable file to a smaller size. It can be downloaded at <a href="https://upx.github.io/">https://upx.github.io/</a>.</p>
+
+
+
+<p>The cool thing about the UPX project is that it not only comes with a
+ compressor, but also a built-in decompressor, by specifying the <code>-d</code> commandline flag. Unfortunately for us, this does not seem to work that well:</p>
+
+
+
+<pre class="wp-block-preformatted">D:\Washi\RE\flareon2020\02&gt;upx.exe -d garbage.exe
+                       Ultimate Packer for eXecutables
+                          Copyright (C) 1996 - 2020
+UPX 3.96w       Markus Oberhumer, Laszlo Molnar &amp; John Reiser   Jan 23rd 2020
+
+        File size         Ratio      Format      Name
+   --------------------   ------   -----------   -----------
+upx: garbage.exe: OverlayException: invalid overlay size; file is possibly corrupt</pre>
+
+
+
+<p>It seems some of the PE headers are corrupt. It complains about some size being incorrect.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/2#fixing-the-sections"></a>“Fixing” the sections</h2>
+
+
+
+<p>When a file is incomplete, it usually means it is too short. Looking again at the sections, we can see that the last section <code>.rsrc</code>
+ starts at file offset 0x9E00, and has a size of 0x400. However, if we 
+look in a hex editor, such as HxD, we can quickly see that some of the 
+section’s data got cut off:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/hxd1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/hxd1.png" alt="Figure 2"></a></figure>
+
+
+
+<p>We are missing a total of 0x400 – 0x124 = 0x2DC bytes. Let’s append 0x2DC 00 bytes to the end of the file. Let’s run UPX again.</p>
+
+
+
+<pre class="wp-block-code"><code>D:\Washi\RE\flareon2020\02&gt;upx.exe -d garbage2.exe
+                       Ultimate Packer for eXecutables
+                          Copyright (C) 1996 - 2020
+UPX 3.96w       Markus Oberhumer, Laszlo Molnar &amp; John Reiser   Jan 23rd 2020
+
+        File size         Ratio      Format      Name
+   --------------------   ------   -----------   -----------
+     79360 &lt;-     41472   52.26%    win32/pe     garbage2.exe
+
+Unpacked 1 file.
+</code></pre>
+
+
+
+<p>This time around, it does not complain. Success!</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/2#fixing-resources"></a>“Fixing” resources</h2>
+
+
+
+<p>Except there is a problem. Running the application results in the following error:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/error1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/error1.png" alt="Figure 3"></a></figure>
+
+
+
+<p>It complains about “side-by-side configuration”. This is probably 
+because while we did fill up the resources section up to the right size,
+ we didn’t really fill it up with the right data. There’s two ways of 
+going about this: Either we can fix the resources directory by coming up
+ with the right contents, or just remove it entirely and guess that the 
+program doesn’t really need the resources at all.</p>
+
+
+
+<p>I chose the latter one :). This can be done by simply clearing out the directory entry in the optional header of the PE:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/cff2.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/cff2.png" alt="Figure 4"></a></figure>
+
+
+
+<p>Save it, and run it. Should be fine now right?</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/2#fixing-imports"></a>Fixing imports</h2>
+
+
+
+<p>Nope, we are still greeted with an error message:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/error2.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/error2.png" alt="Figure 5"></a></figure>
+
+
+
+<p><code>.DLL</code>? That’s a weird file name!  Let’s have a look at the libraries that this PE file imports.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/cff3.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/cff3.png" alt="Figure 6"></a></figure>
+
+
+
+<p>No wonder it could not find the imported DLLs. The module names are 
+cleared out! We can easily figure out the original names of these 
+modules by simply doing a quick Google search for one of the imported 
+functions for each and every import. The module names are “kernel32.dll”
+ and “shell32.dll”.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/2#fixing-relocations"></a>Fixing relocations</h2>
+
+
+
+<p>The application still does not run as expected, but it does not give 
+an error anymore. Looking again at the sections and the data 
+directories, we can observe one final issue.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/cff4.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/cff4.png" alt="Figure 7"></a></figure>
+
+
+
+<p>The binary contains a section called <code>.reloc</code>, which is 
+used for storing base relocations. However, if a binary contains 
+relocations, it must contain a data directory entry in the optional 
+header for it. But if we look into the optional header, we see it is 
+cleared out:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/cff5.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/cff5.png" alt="Figure 8"></a></figure>
+
+
+
+<p>Copying over the virtual address and the size from the <code>.reloc</code> section to the appropriate data directory fixes the binary, and the app is runnable.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/2#getting-the-flag"></a>Getting the flag</h2>
+
+
+
+<p>Turns out, this is all we need to do. The final application drops a vbs script and executes it. This script prompts the flag:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/2/solution.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/solution.png" alt="Figure 9"></a></figure>
+
+
+
+<h1 id="Wednesday">3 – wednesday</h1>
+
+
+
+<p><strong>Time spent:</strong> 2 hours</p>
+
+
+
+<p><strong>Tools used:</strong> Ghidra, x64dbg, Cyberchef</p>
+
+
+
+<p>The third challenge is another game. In the game, you play as a frog 
+on an obstacle course, where you can either duck under or jump over each
+ obstacle on the track.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/game.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/game.png" alt="Figure 1" class="below-entry-meta"></a></figure>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/3#orientation"></a>Orientation</h2>
+
+
+
+<p>If you play the game a few times, you will quickly notice you’ll die 
+quite often randomly, even if it looks like you ducked in time or jumped
+ over the obstacle correctly. It seems the game lacks some visual cues 
+on whether to duck or jump for every obstacle.</p>
+
+
+
+<p>If we open the binary in Ghidra, we also notice that our binary is 
+most likely not obfuscated. It has a lot of symbols present, and a huge 
+list of strings that are used throughout the game. The problem however 
+is that it is a game, and the source code of a game is substantially 
+larger than a typical crackme / keygenme. Most of the code is probably 
+relevant to drawing and updating the game, and therefore not really 
+relevant to us at all. The challenge of this task is to figure out what 
+is important to us, and what is not.</p>
+
+
+
+<p>Naturally, we want to try to beat the game and hope that there is a 
+flag at the end of it all. I started out by looking for code that 
+updates the score. In particular, when it resets the score after 
+colliding with one of the obstacles (visible or invisible).</p>
+
+
+
+<p>We know that the game draws the text “Score: #” on our screen. Let’s 
+see if we can find some references to it. If we have a look at the 
+strings that are present, we can see some interesting things:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/strings1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/strings1.png" alt="Figure 2"></a></figure>
+
+
+
+<p>The last one seems to not only just print “Score:” but also a hardcoded 0. Let’s have a look at references to this string:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/strings2.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/strings2.png" alt="Figure 3" class="below-entry-meta"></a></figure>
+
+
+
+<p>This is convenient. Since symbols are not stripped from this 
+executable, we can quickly see that this string is used upon 
+initialization of the game, as well as another function which resets 
+everything. A good guess would be that the latter one is called when the
+ game has decided you lost. Let’s have a look:</p>
+
+
+
+<pre class="wp-block-preformatted">void __fastcall @resetEverything__Q1G0gjmnsnF8mVSgZnKS4w_3@4(int param_1)
+{
+    /* ... */
+
+    // Reset score.
+    _score__h34o6jaI3AO6iOQqLKaqhw = 0;
+    __prev_score__55xT1lC51wWU8x2SoheEqg = 0;
+    @setText__8eh9cPEhHFuwDBVIJ9bHNz9cA@16(*(param_1 + 0x34),&amp;_TM__V45tF8B8NBcxFcjfe7lhBw_2,0);
+    
+    // Reset day_index.
+    _day_index__HImZp3MMPNE3pGzeJ4pUlA = 0;
+    
+    /* ... */
+    
+    // Reset obstacle 1.
+    @reset__SAtOZDlchGyR6ynmbkI6aw@24
+              (*(param_1 + 0x3c),0,0x40845000,0,0x40668000,
+               _obstacles__Xqz7GG9aS72pTPD9ceUjZPNg[_day_index__HImZp3MMPNE3pGzeJ4pUlA + 8]);
+
+    /* ... */
+
+    _day_index__HImZp3MMPNE3pGzeJ4pUlA = _day_index__HImZp3MMPNE3pGzeJ4pUlA + 1;
+    
+    /* ... */
+    
+    // Reset obstacle 2.
+    @reset__SAtOZDlchGyR6ynmbkI6aw@24
+              (*(param_1 + 0x40),0,0x408ef000,0,0x40668000,
+               _obstacles__Xqz7GG9aS72pTPD9ceUjZPNg[_day_index__HImZp3MMPNE3pGzeJ4pUlA + 8]);
+
+    /* ... */
+}</pre>
+
+
+
+<p>In this function, a lot of things happen, most of which is not really
+ important to us. The key take away from this function however, is that 
+it tells us something about a lot of important variables that we can 
+start cross-referencing on:</p>
+
+
+
+<ul><li><strong>_score__h34o6jaI3AO6iOQqLKaqhw:</strong> The current score.</li><li><strong>__prev_score__55xT1lC51wWU8x2SoheEqg:</strong> The previous score.</li><li><strong>_obstacles__Xqz7GG9aS72pTPD9ceUjZPNg:</strong> Some data related to obstacles.</li><li><strong>_day_index__HImZp3MMPNE3pGzeJ4pUlA:</strong> An index that is used to access elements inside the obstacles array.</li></ul>
+
+
+
+<p>We can also see in the cross references of this <code>resetEverything</code> function, that this function is called in one of the <code>update</code> functions of the game. Let’s have a look at this function:</p>
+
+
+
+<pre class="wp-block-preformatted">void __thiscall @update__giAKdkRYJ1A0Qn9asB8s9ajA@12(void *this,double param_1)
+{
+    /* ... */
+
+    if (*(*(this + 0x28) + 0xf9) == '\x01') {
+        @resetEverything__Q1G0gjmnsnF8mVSgZnKS4w_3@4(this);
+    }
+
+    /* ... */
+ 
+    if (-(uVar9 * 0.50000000) &lt; *(*(this + 0x40) + 0x48)) goto LAB_00433e79;
+
+    // Update day index.
+    uVar8 = _day_index__HImZp3MMPNE3pGzeJ4pUlA + 1;
+    /* ... */
+    _day_index__HImZp3MMPNE3pGzeJ4pUlA = uVar8;
+
+    /* ... */
+
+    // Load next obstacle.
+    @reset__SAtOZDlchGyR6ynmbkI6aw@24
+              (*(this + 0x3c),0,0x40845000,0,0x40668000,
+               _obstacles__Xqz7GG9aS72pTPD9ceUjZPNg[_day_index__HImZp3MMPNE3pGzeJ4pUlA + 8]);
+
+    /* ... */
+
+    uVar8 = _day_index__HImZp3MMPNE3pGzeJ4pUlA + 1;
+    /* ... */
+    _day_index__HImZp3MMPNE3pGzeJ4pUlA = uVar8;
+    
+    /* ... */
+
+    // Load second next obstacle.
+    @reset__SAtOZDlchGyR6ynmbkI6aw@24
+              (*(this + 0x40),0,0x408ef000,0,0x40668000,
+               _obstacles__Xqz7GG9aS72pTPD9ceUjZPNg[_day_index__HImZp3MMPNE3pGzeJ4pUlA + 8]);
+    
+    /* ... */
+
+    // Check if score needs to be updated.
+LAB_00433e79:
+    if (__prev_score__55xT1lC51wWU8x2SoheEqg != _score__h34o6jaI3AO6iOQqLKaqhw) {
+        __prev_score__55xT1lC51wWU8x2SoheEqg = _score__h34o6jaI3AO6iOQqLKaqhw;
+
+        // Update score label.
+        puVar4 = @nimIntToStr@4(_score__h34o6jaI3AO6iOQqLKaqhw);
+        if (puVar4 == 0x0) {
+            /* ... */
+        }
+        else {
+            puVar5 = @rawNewString@4(*puVar4 + 7);
+            uVar8 = *puVar5;
+            *(puVar5 + uVar8 + 8) = 0x726f6353; // "Scor"
+            *(puVar5 + uVar8 + 0xc) = 0x203a65; // "e: "
+            *puVar5 = uVar8 + 7;
+            _memcpy(puVar5 + uVar8 + 0xf,puVar4 + 2,*puVar4 + 1);
+            *puVar5 = *puVar5 + *puVar4;
+        }
+        @setText__8eh9cPEhHFuwDBVIJ9bHNz9cA@16(*(this + 0x34),puVar5,0);
+
+        // Update high score and high score label if necessary:
+        if (__high_score__zZRxWe9cBeocEphfWmZaLtA &lt; _score__h34o6jaI3AO6iOQqLKaqhw) {
+            __high_score__zZRxWe9cBeocEphfWmZaLtA = _score__h34o6jaI3AO6iOQqLKaqhw;
+            puVar4 = @nimIntToStr@4(_score__h34o6jaI3AO6iOQqLKaqhw);
+            if (puVar4 == 0x0) {
+                /* ... */
+            }
+            else {
+                puVar5 = @rawNewString@4(*puVar4 + 0xc);
+                puVar1 = puVar5 + *puVar5 + 8;
+                *puVar1 = 0x68676948;   // "High"
+                puVar1[1] = 0x6f635320; // " Sco"
+                puVar1[2] = 0x203a6572; // "re: "
+                *(puVar1 + 3) = 0;
+                uVar8 = *puVar5;
+                *puVar5 = uVar8 + 0xc;
+                _memcpy(puVar5 + uVar8 + 0x14,puVar4 + 2,*puVar4 + 1);
+                *puVar5 = *puVar5 + *puVar4;
+            }
+            @setText__8eh9cPEhHFuwDBVIJ9bHNz9cA@16(*(this + 0x38),puVar5,0);
+        }
+    }
+
+    // Win condition:
+    piVar2 = *(*(this + 0x28) + 0xfc);
+    if ((piVar2 != 0x0) &amp;&amp; (*piVar2 == 0x128)) {
+        // Switch to win scene.
+        @sceneeq___HC7o4hYar8OQigU09cNyehg@8(_game__7aozTrKmb7lwLeRmW9a9cs9cQ,_winScene__eVaCVkG1QBiYVChMxpMGBQ);
+    }
+    return;
+}</pre>
+
+
+
+<p>Again, a very large function for which most of the code is not really
+ relevant to us. The key take away again is how the previously mentioned
+ variables are used and updated. Similar to the <code>resetEverything</code> function, we can see that <code>_day_index</code> is increased twice. We can also see that a <code>reset</code>
+ function is called twice. Towards the end, we see a big if statement 
+that handles updating the score labels, and finally we see a very 
+interesting if statement, which is the deciding factor on whether the 
+game should switch to the win scene or not.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/3#letting-the-game-think-we-have-won"></a>Letting the game think we have won</h2>
+
+
+
+<p>My first attempt to win the game was making two small changes in the 
+program. The first change is to patch out the if statement that decides 
+on whether to reset the game (<code>0x00433d5c</code>), and patching out the condition where we check whether we won the game or not (<code>0x00433fa7-0x00433fb3</code>).</p>
+
+
+
+<p>This did let me “win” the game immediately, but unfortunately this 
+didn’t seem to be enough. We are greeted with the following screen:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/attempt1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/attempt1.png" alt="Figure 4" class="below-entry-meta"></a></figure>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/3#lets-be-a-bit-more-smart-about-this"></a>Let’s be a bit more smart about this</h2>
+
+
+
+<p>Maybe the program requires you to actually win the game by 
+successfully avoiding all obstacles (who would have thought?!). I 
+decided to look at how obstacles are actually generated. For this, this <code>reset</code> function that we have seen a few times already seemed interesting. Let’s have a look:</p>
+
+
+
+<pre class="wp-block-preformatted">void __thiscall
+@reset__SAtOZDlchGyR6ynmbkI6aw@24
+          (void *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,char obstacleData)
+
+{
+    undefined8 uVar1;
+    
+    *(this + 0x18) = 0;
+    *(*(this + 0xf8) + 0x18) = 0;
+    @assignDay__cz9bfHkuka9cVFg87ZfWKc8g@8(this, obstacleData);
+    *(this + 0x48) = param_1;
+    *(this + 0x4c) = param_2;
+    *(this + 0x50) = param_3;
+    *(this + 0x54) = param_4;
+    *(*(this + 0xf8) + 0xf8) = obstacleData;
+    uVar1 = @dim__bpDLBzGNY4prT1xkxCzkTQ@4(*(this + 0x1c));
+    *(*(this + 0xf8) + 0x48) = uVar1 * 0.50000000 + CONCAT44(param_2,param_1);
+    *(*(this + 0xf8) + 0x50) = 0;
+    return;
+}</pre>
+
+
+
+<p>A lot of noise in this function that is related to objects. What we 
+can see though, is that the obstacle data is passed onto a call to <code>assignDay</code>. Let’s follow the trail:</p>
+
+
+
+<pre class="wp-block-preformatted">void __fastcall @assignDay__cz9bfHkuka9cVFg87ZfWKc8g@8(void *param_1,char obstacleData)
+{
+    /* ... */
+    
+    if (obstacleData == '\x01') {
+        ppiVar5 = @sample__3xfZAw0SQXCnAoXzmGGnMA@8(&amp;TABLE_1,3);
+    }
+    else {
+        ppiVar5 = @sample__3xfZAw0SQXCnAoXzmGGnMA@8(&amp;TABLE_2,3);
+    }
+    puVar3 = @X5BX5D___oZtnouS45hQGXVXpvrCNuA@8(_gfxData__TftuyNzrt9cB3jrOs59bhBFw,ppiVar5);
+  
+    /* ... */
+
+    *(param_1 + 0x1c) = puVar1;
+    uVar6 = @dim__bpDLBzGNY4prT1xkxCzkTQ@4(puVar1);
+    @initSprite__a7AIRKo9cwk8OAhU21EI0ew@28(param_1,uVar6,uVar6 &gt;&gt; 0x20,0,0,0,0);
+    
+    /* ... */
+}</pre>
+
+
+
+<p>From this function, we can finally see how the obstacle data is used.
+ We see that the obstacle data is nothing more than a single char, and 
+depending on the contents of this char, it calls the <code>sample</code> function on either <code>TABLE_1</code> or <code>TABLE_2</code>. In particular, it looks like the obstacle data is either 1 or not 1 (0? is this binary?). After that, it ends up in a call to <code>initSprite</code>. Looking at these two tables in Ghidra, we see it is a table of strings…</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/strings3.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/strings3.png" alt="Figure 5" class="below-entry-meta"></a></figure>
+
+
+
+<p>… which match very conveniently some of the file names in the <code>gfx</code> directory of the game:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/gfx1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/gfx1.png" alt="Figure 6"></a></figure>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/3#tying-it-together"></a>Tying it together</h2>
+
+
+
+<p>We now know that our obstacles array is nothing more than an array of
+ characters, and that the actual obstacles are generated based on this 
+array. Let’s have a look at its raw contents:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/obstacles.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/obstacles.png" alt="Figure 7"></a></figure>
+
+
+
+<p>That data looks awfully lot like a binary string, prepended by a 
+length. Let’s copy the bytes as a hex string, throw it in cyberchef, 
+filter out the leading zero, and convert from binary:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/3/solution.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/solution_003.png" alt="Figure 8" class="below-entry-meta"></a></figure>
+
+
+
+<p>.. revealing the flag.</p>
+
+
+
+<h1 id="report">4 – report</h1>
+
+
+
+<p><strong>Time spent:</strong> 2 hours</p>
+
+
+
+<p><strong>Tools used:</strong> Office Excel 2010, Python</p>
+
+
+
+<p>For the fourth challenge in the series, you are given nothing more than an Excel sheet called <code>report.xls</code>. The message tells us that the file is infected, and that we should have a look at it.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/4#orientation"></a>Orientation</h2>
+
+
+
+<p>Opening the report, we are greeted with a message that the document 
+was made using an “older version of Office”, and that we should click on
+ “Enable content” to enable the totally-not-a-virus macros.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/office1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/office1.png" alt="Figure 1" class="below-entry-meta"></a></figure>
+
+
+
+<p>Newer versions of Office already notice that something is wrong with 
+this document, and warn us to not enable any of its progrmamable 
+content. Of course, we are stubborn and we do it anyway.</p>
+
+
+
+<p>We immediately notice that the script fails to run properly, complaining about some invalid procedure call:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/office2.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/office2.png" alt="Figure 2"></a></figure>
+
+
+
+<p>And we are transferred to the VBA editor:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/office3.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/office3.png" alt="Figure 3"></a></figure>
+
+
+
+<p>Nothing seems to be out of the ordinary in terms of syntax errors. 
+Odd! If we look at the VBA project structure, we see it consists of a 
+couple of VBA script files called <code>ThisWorkbook</code>, and <code>Sheet1</code> (a copy can be found <a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/Sheet1.vb">here</a>). Furthermore, we also see it contains a form with a weird label and textbox:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/office4.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/office4.png" alt="Figure 3"></a></figure>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/4#recreating-the-script-in-python"></a>Recreating the script in Python</h2>
+
+
+
+<p>Since the script doesn’t run, let’s try to recreate it. In <code>ThisWorkbook1</code> we see that <code>folderol</code> of <code>Sheet1</code>
+ is our main procedure of the script. We immediately see the script is 
+obfuscated, but not heavily. In particular, a lot of the strings seem to
+ be stored in the <code>onzo</code> variable, and are decoded using the <code>rigmarole</code> function. Looking at line 38, <code>onzo</code> is nothing more than the contents of the <code>L</code> label in our form, splitted by <code>.</code>.</p>
+
+
+
+<pre class="wp-block-preformatted">onzo = Split(F.L, ".")</pre>
+
+
+
+<p>Let’s reimplement the decoder using Python and build up a strings table:</p>
+
+
+
+<pre class="wp-block-preformatted">def rigmarole(d): 
+    result = ""
+    for i in range(0, len(d), 4):
+        c1 = int(d[i:i+2], 16)
+        c2 = int(d[i+2:i+4], 16)
+        c = c1 - c2 
+        result += chr(c)
+    return result 
+
+with open("F.L.txt", "r") as f:
+    data = f.read().split('.')
+    
+for j in range(len(data)):
+    print(j, rigmarole(data[j]))</pre>
+
+
+
+<p>This gives us:</p>
+
+
+
+<pre class="wp-block-code"><code>0 AppData
+1 \Microsoft\stomp.mp3
+2 play
+3 FLARE-ON
+4 Sorry, this machine is not supported.
+5 FLARE-ON
+6 Error
+7 winmgmts:\\.\root\CIMV2
+8 SELECT Name FROM Win32_Process
+9 vbox
+10 WScript.Network
+11 \Microsoft\v.png
+</code></pre>
+
+
+
+<p>Now we can replace all occurrences of <code>rigmarole</code> with the strings. Here is the first part:</p>
+
+
+
+<pre class="wp-block-preformatted">If GetInternetConnectedState = False Then
+    MsgBox "Cannot establish Internet connection.", vbCritical, "Error"
+    End
+End If
+
+Set fudgel = GetObject("winmgmts:\\.\root\CIMV2")
+Set twattling = fudgel.ExecQuery("SELECT Name FROM Win32_Process", , 48)
+For Each p In twattling
+    Dim pos As Integer
+    pos = InStr(LCase(p.Name), "vmw") + InStr(LCase(p.Name), "vmt") + InStr(LCase(p.Name), "vbox"))
+    If pos &gt; 0 Then
+        MsgBox "Sorry, this machine is not supported.", vbCritical, rigmarole(onzo(6))
+        End
+    End If
+Next</pre>
+
+
+
+<p>The code above checks for internet connection (which a lot of 
+automatic malware analysis tools disable), and secondly it looks for a 
+list of known processes that are running when using a virtual machine. 
+If any of these checks are met, the program exits. This can therefore be
+ classified as an anti analysis technique, and can be ignored.</p>
+
+
+
+<p>Then we get to our second part:</p>
+
+
+
+<pre class="wp-block-preformatted">xertz = Array(&amp;H11, &amp;H22, &amp;H33, &amp;H44, &amp;H55, &amp;H66, &amp;H77, &amp;H88, &amp;H99, &amp;HAA, &amp;HBB, &amp;HCC, &amp;HDD, &amp;HEE)
+
+wabbit = canoodle(F.T.Text, 0, 168667, xertz)
+mf = Environ("AppData") &amp; "\Microsoft\stomp.mp3"
+Open mf For Binary Lock Read Write As #fn
+    Put #fn, , wabbit
+Close #fn
+
+mucolerd = mciSendString("play " &amp; mf, 0&amp;, 0, 0)</pre>
+
+
+
+<p>We see that it grabs the contents of the textbox on our form, feeds it into the <code>canoodle</code> function together with some hardcoded array, and then writes it to a file in AppData called <code>stomp.mp3</code>. Looking at <code>canoodle</code>
+ reveals it is not much more than interpreting every 4th and 5th 
+character in the input string as a hexadecimal number, and XOR’ing it 
+with the second parameter, i.e. a typical xor encryption/decryption 
+routine.</p>
+
+
+
+<pre class="wp-block-preformatted">def decrypt(data, start, length):
+    result = bytearray([0]*length)
+    quean = 0
+    for cattywampus in range(start, len(data), 4):
+        result[quean] = int(data[cattywampus:cattywampus+2], 16) ^ key[quean % len(key)]
+        quean += 1
+        if quean == len(result):
+            break
+    return result
+
+with open("F.T.txt", "r") as f:
+    data = f.read()
+
+key = bytes([0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE])
+result = decrypt(data, 0, 168667)
+
+with open("stomp.mp3", "wb") as f:
+    f.write(result)</pre>
+
+
+
+<p>However, it outputs a sound file (<a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/stomp.mp3">stomp.mp3</a>)
+ with the title “This is not what you should be looking at…”, and the 
+audio itself is nothing more than some drums playing a rhythm.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/stomp.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/stomp.png" alt="Figure 4" class="below-entry-meta"></a></figure>
+
+
+
+<p>What did we miss?</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/4#introduction-to-vba-stomping"></a>Introduction to VBA stomping</h2>
+
+
+
+<p>The clue is in the file name of output mp3 file.</p>
+
+
+
+<p>It so happens that documents containing VBA code do not directly 
+interpret the VBA code as specified in the script files. Instead, the 
+VBA is compiled into what is known as P-Code, a stack-based 
+assembly-like language. This P-Code is stored next to the original 
+source code, and evaluated instead. My guess for Microsoft doing this, 
+is that evaluating P-Code is easier and potentially faster than trying 
+to parse the VBA code every time the macro is invoked.</p>
+
+
+
+<p>The problem with this is, when Excel notices that some P-Code exists 
+in the file, it will execute this code, without compiling the original 
+source first. This happens even if the P-Code does not match the 
+original code. An attacker could therefore construct a malicious 
+document, by compiling a VBA script to P-Code, and removing or replacing
+ the original VBA code in the document with something completely 
+different. This effectively hides the true program that is executed from
+ the GUI editor that is built into Office products. This technique is 
+also called VBA stomping, which was referred to in the name of the mp3 
+file.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/4#finding-the-real-program"></a>Finding the real program</h2>
+
+
+
+<p>Luckily, there are various tools to deal with stomped VBA documents and sheets. One of them is <code>oletools</code>, which can be found <a href="https://github.com/decalage2/oletools">here</a>. Running the <code>olevba</code> script on <code>report.xls</code>, confirms that the file is indeed stomped:</p>
+
+
+
+<pre class="wp-block-preformatted">$ olevba report.xls
+...
++----------+--------------------+---------------------------------------------+
+|Type      |Keyword             |Description                                  |
++----------+--------------------+---------------------------------------------+
+|AutoExec  |Auto_Open           |Runs when the Excel Workbook is opened       |
+|AutoExec  |Workbook_Open       |Runs when the Excel Workbook is opened       |
+|Suspicious|CreateObject        |May create an OLE object                     |
+|Suspicious|Environ             |May read system environment variables        |
+|Suspicious|Write               |May write to a file (if combined with Open)  |
+|Suspicious|Put                 |May write to a file (if combined with Open)  |
+|Suspicious|Open                |May open a file                              |
+|Suspicious|Lib                 |May run code from a DLL                      |
+|Suspicious|Chr                 |May attempt to obfuscate specific strings    |
+|          |                    |(use option --deobf to deobfuscate)          |
+|Suspicious|Xor                 |May attempt to obfuscate specific strings    |
+|          |                    |(use option --deobf to deobfuscate)          |
+|Suspicious|Binary              |May read or write a binary file (if combined |
+|          |                    |with Open)                                   |
+|Suspicious|Hex Strings         |Hex-encoded strings were detected, may be    |
+|          |                    |used to obfuscate strings (option --decode to|
+|          |                    |see all)                                     |
+|IOC       |wininet.dll         |Executable file name                         |
+|IOC       |winmm.dll           |Executable file name                         |
+|Suspicious|VBA Stomping        |VBA Stomping was detected: the VBA source    |
+|          |                    |code and P-code are different, this may have |
+|          |                    |been used to hide malicious code             |
++----------+--------------------+---------------------------------------------+</pre>
+
+
+
+<p>While <code>olevba</code> is able to dump the actual P-Code that is 
+run, P-Code is harder to read than normal VBA. Fortunately, there is 
+another tool called <a href="https://github.com/Big5-sec/pcode2code">pcode2code</a>, which is able to decompile it back to normal VBA code. Feeding <code>report.xls</code> to pcode2code gives us an output similar to the one provided in <a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/ActualCode.vb">ActualCode.vb</a>.</p>
+
+
+
+<p>The final part of the original main procedure is replaced with the following code:</p>
+
+
+
+<pre class="wp-block-preformatted">Set groke = CreateObject(rigmarole(onzo(10)))   ' "WScript.Network"
+firkin = groke.UserDomain
+If firkin &lt;&gt; rigmarole(onzo(3)) Then   ' "FLARE-ON"
+    MsgBox rigmarole(onzo(4)), vbCritical, rigmarole(onzo(6)) ' "Sorry, this machine is not supported", "Error"
+    End
+End If
+
+n = Len(firkin)
+For i = 1 To n
+    buff(n - i) = Asc(Mid$(firkin, i, 1))
+Next
+
+wabbit = canoodle(F.T.Text, 2, 285729, buff)
+mf = Environ(rigmarole(onzo(0))) &amp; rigmarole(onzo(11))
+Open mf For Binary Lock Read Write As #fn
+wabbit = canoodle(F.T.Text, 2, 285729, buff)
+mf = Environ(rigmarole(onzo(0))) &amp; rigmarole(onzo(11)) '"AppData", "\Microsoft\v.png"</pre>
+
+
+
+<p>Instead of writing <code>output.mp3</code>, it writes <code>v.png</code>,
+ and the parameters of the decryption function are different. The key is
+ the reversed bytes of “FLARE-ON”, and we start at index 2 instead of 0.
+ Let’s adjust our python script:</p>
+
+
+
+<pre class="wp-block-preformatted">key = bytes(reversed(b"FLARE-ON"))
+result = decrypt(data, 2, 285729)
+
+with open("v.png", "wb") as f:
+    f.write(result)</pre>
+
+
+
+<p>This results in the answer:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/4/v.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/v.png" alt="Figure 4"></a></figure>
+
+
+
+<h1 id="TKApp">5 – TKApp</h1>
+
+
+
+<p><strong>Time spent:</strong> 2 hours (one hour wasted on setting up and troubleshooting an emulator <img draggable="false" class="emoji" alt="🙁" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/1f641.svg"> )</p>
+
+
+
+<p><strong>Tools used:</strong> dnSpy, C#, and NOT an emulator</p>
+
+
+
+<p>The fifth challenge of this years is an interesting concept. You are 
+given an app that runs on Android Wearables, and a note that tells you 
+that you can play flare-on now on your smart watch as well, so long you 
+have a good debugger for it. The app apparently is some sort of a 
+gallery app, with some cool tiger pictures in it.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/5/tiger2.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/tiger2.png" alt="Figure 1"></a></figure>
+
+
+
+<p>However, the conclusion of this write-up might be somewhat 
+anticlimactic. I probably did not solve this the intended way. In fact, I
+ ended up solving it without the need to run the program at all.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#orientation"></a>Orientation</h2>
+
+
+
+<p>The first thing I did, was start downloading and installing an 
+emulator to run the app on (I used Visual Studio’s Android Emulator that
+ comes with the Xamarin SDK).</p>
+
+
+
+<p>While that is going on, we can already do some preparation work. We 
+know it is an Android app. The cool thing about APK and TPK files, is 
+that they are simply zip files with a certain structure to them. We can 
+therefore just use any archiving tool that supports the zip archive 
+format, and extract all relevant files from there. Here’s the folder 
+structure of the app:</p>
+
+
+
+<ul><li><code>/</code>
+<ul><li><code>bin/</code> (compiled binaries)
+<ul><li><code>TKapp.dll</code> (main code)</li><li><code>ExifLib.Standard.dll</code></li><li>other dependencies…</li></ul>
+</li><li><code>lib/</code> (libraries used, empty)</li><li><code>res/</code> (resource files, images etc.)</li><li><code>shared/</code> (more images)</li><li><code>author-signature.xml</code></li><li><code>signature1.xml</code></li><li><code>tizen-manifest.xml</code> (application’s manifest)</li><li><code>TKApp.deps.json</code></li></ul>
+</li></ul>
+
+
+
+<p>From the <code>tizen-manifest.xml</code> we can find the application’s entrypoint dll (<code>TKApp.dll</code>). Dragging this in a tool like CFF explorer reveals that this dll is written in a .NET language.</p>
+
+
+
+<p>Decompilers targeting .NET applications (such as dnSpy or ILSpy) are 
+quite good nowadays, especially when the application in question is not 
+obfuscated heavily. This app is no exception. Hardly any obfuscation is 
+applied:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/5/dnSpy1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/dnSpy1.png" alt="Figure 2"></a></figure>
+
+
+
+<p>Let’s start the detective work!</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#unlockpage"></a>UnlockPage</h2>
+
+
+
+<p>Since I was still waiting for the emulator to be downloaded and 
+installed (sheesh), I decided to just click around a bit. If an 
+application is not obfsucated, then we can already get a lot of 
+information just by looking at the source code.</p>
+
+
+
+<p>The app consists of a couple of pages. One that immediately stuck out to me was <code>UnlockPage</code>. This page defines a method called <code>IsPasswordCorrect</code>, which is called by a login button click handler. Here’s the contents of these two methods:</p>
+
+
+
+<pre class="wp-block-preformatted">private async void OnLoginButtonClicked(object sender, EventArgs e)
+{
+    if (this.IsPasswordCorrect(this.passwordEntry.Text))
+    {
+        App.IsLoggedIn = true;
+        App.Password = this.passwordEntry.Text;
+        base.Navigation.InsertPageBefore(new MainPage(), this);
+        await base.Navigation.PopAsync();
+    }
+    else
+    {
+        Toast.DisplayText("Unlock failed!", 2000);
+        this.passwordEntry.Text = string.Empty;
+    }
+}
+
+private bool IsPasswordCorrect(string password)
+{
+    return password == Util.Decode(TKData.Password);
+}</pre>
+
+
+
+<p><code>Password</code> is a hardcoded byte array in the <code>TKData</code> class:</p>
+
+
+
+<pre class="wp-block-preformatted">public static byte[] Password = new byte[]
+{
+    62, 38, 63, 63, 54, 39, 59, 50, 39
+};</pre>
+
+
+
+<p>And the <code>Decode</code> method is a simple xor decryption routine:</p>
+
+
+
+<pre class="wp-block-preformatted">public static string Decode(byte[] e)
+{
+    string text = "";
+    foreach (byte b in e)
+    {
+        text += Convert.ToChar((int)(b ^ 83)).ToString();
+    }
+    return text;
+}</pre>
+
+
+
+<p>Plugging this decode function into any C# editor and running the code will give us the password:</p>
+
+
+
+<pre class="wp-block-code"><code>mullethat
+</code></pre>
+
+
+
+<p>Great, but this is not a flag, as flags end with <code>@flare-on.com</code>. Obviously it couldn’t be <em>that</em> easy!</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#a-rant-about-visual-studio-and-android-emulators"></a>A rant about Visual Studio and Android emulators…</h2>
+
+
+
+<p>At this point the android emulator finally finished installing, and I
+ started wasting lots of time on trying to get the app running. And at 
+this moment, I was once again reminded of why I never use Visual Studio 
+anymore. Besides the fact that it is absolutely the sluggiest IDE I 
+probably have ever used, for the love of god, I couldn’t get the 
+emulator to work for at least 30 minutes. When it finally ran, I tried 
+running a blank watch app project myself, which I eventually got running
+ on my virtual machine, but could not figure out how to upload a custom 
+TPK file for another 15 minutes. Then as a last resort I tried to fully 
+decompile the TKApp, recompile it using Visual Studio, and see if I can 
+run it like that, but apparently the App uses very outdated dependencies
+ of Tizen, which stopped me from compiling the project properly, even 
+though ILSpy’s generated source code had no syntax errors whatsoever. I 
+decided at this point to call it quits and just try this challenge 
+completely statically.</p>
+
+
+
+<p>You’d expect from Visual Studio, a toolsuite that is gigabytes in 
+size on the disk, developed by Microsoft, a reputable company, that it 
+would be easy to upload a custom tpk file to the watch emulator and run 
+it. I am probably missing something obvious but boy, they could have 
+made it a lot easier. Once again, a downvote from me for you Visual 
+Studio.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#mainpage"></a>MainPage</h2>
+
+
+
+<p>Let’s do a step back: In the login click handler, we can see that 
+after a correct password validation, we can see that the program opens <code>MainPage</code>.
+ This page has a couple of very interesting, odd-looking methods that 
+suspiciously look like some verification or decryption routine. One is 
+called <code>PedDataUpdate</code>, and the other is <code>GetImage</code>. Here is the code:</p>
+
+
+
+<pre class="wp-block-preformatted">private void PedDataUpdate(object sender, PedometerDataUpdatedEventArgs e)
+{
+    if (e.StepCount &gt; 50U &amp;&amp; string.IsNullOrEmpty(App.Step))
+    {
+        App.Step = Application.Current.ApplicationInfo.Metadata["its"];
+    }
+    if (!string.IsNullOrEmpty(App.Password) &amp;&amp; !string.IsNullOrEmpty(App.Note) &amp;&amp; !string.IsNullOrEmpty(App.Step) &amp;&amp; !string.IsNullOrEmpty(App.Desc))
+    {
+        HashAlgorithm hashAlgorithm = SHA256.Create();
+        byte[] bytes = Encoding.ASCII.GetBytes(App.Password + App.Note + App.Step + App.Desc);
+        byte[] first = hashAlgorithm.ComputeHash(bytes);
+        byte[] second = new byte[]
+        {
+            50, 148, 76, 233, 110, 199, 228, 72, 114, 227, 78, 138, 93, 189, 189, 147, 
+            159, 70, 66, 223, 123, 137, 44, 73, 101, 235, 129, 16, 181, 139, 104, 56
+        };
+        if (first.SequenceEqual(second))
+        {
+            this.btn.Source = "img/tiger2.png";
+            this.btn.Clicked += this.Clicked;
+            return;
+        }
+        this.btn.Source = "img/tiger1.png";
+        this.btn.Clicked -= this.Clicked;
+    }
+}
+
+private bool GetImage(object sender, EventArgs e)
+{
+    if (string.IsNullOrEmpty(App.Password) || string.IsNullOrEmpty(App.Note) || string.IsNullOrEmpty(App.Step) || string.IsNullOrEmpty(App.Desc))
+    {
+        this.btn.Source = "img/tiger1.png";
+        this.btn.Clicked -= this.Clicked;
+        return false;
+    }
+    string text = new string(new char[]
+    {
+        App.Desc[2],  App.Password[6],  App.Password[4], App.Note[4], App.Note[0],
+        App.Note[17], App.Note[18], App.Note[16], App.Note[11], App.Note[13],
+        App.Note[12], App.Note[15], App.Step[4], App.Password[6], App.Desc[1],
+        App.Password[2], App.Password[2], App.Password[4], App.Note[18], App.Step[2],
+        App.Password[4], App.Note[5], App.Note[4], App.Desc[0], App.Desc[3],
+        App.Note[15], App.Note[8], App.Desc[4], App.Desc[3], App.Note[4],
+        App.Step[2], App.Note[13], App.Note[18], App.Note[18], App.Note[8],
+        App.Note[4], App.Password[0], App.Password[7], App.Note[0],
+        App.Password[4], App.Note[11], App.Password[6], App.Password[4],
+        App.Desc[4], App.Desc[3]
+    });
+    byte[] key = SHA256.Create().ComputeHash(Encoding.ASCII.GetBytes(text));
+    byte[] bytes = Encoding.ASCII.GetBytes("NoSaltOfTheEarth");
+    try
+    {
+        App.ImgData = Convert.FromBase64String(Util.GetString(Runtime.Runtime_dll, key, bytes));
+        return true;
+    }
+    catch (Exception ex)
+    {
+        Toast.DisplayText("Failed: " + ex.Message, 1000);
+    }
+    return false;
+}</pre>
+
+
+
+<p>We can see that <code>GetImage</code> seems to be building up a string based on a bunch of variables in the application, and then feeding it into <code>Util.GetString</code>, together with a hardcoded resource byte array called <code>Runtime.dll</code>.
+ This method does nothing more than implement an AES decryption routine.
+ One of these strings is our previously found password. Let’s find out 
+the values of the other bad boys.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#appnote"></a>App.Note</h2>
+
+
+
+<p>Looking into <code>App.Note</code> in the analyzer of dnSpy, we can see that its value is set at the very end of the <code>SetupList()</code> method in the <code>TodoPage</code> class.</p>
+
+
+
+<pre class="wp-block-preformatted">private void SetupList()
+{
+	List&lt;TodoPage.Todo&gt; list = new List&lt;TodoPage.Todo&gt;();
+	if (!this.isHome)
+	{
+		list.Add(new TodoPage.Todo("go home", "and enable GPS", false));
+	}
+	else
+	{
+		TodoPage.Todo[] collection = new TodoPage.Todo[]
+		{
+			new TodoPage.Todo("hang out in tiger cage", "and survive", true),
+			new TodoPage.Todo("unload Walmart truck", "keep steaks for dinner", false),
+			new TodoPage.Todo("yell at staff", "maybe fire someone", false),
+			new TodoPage.Todo("say no to drugs", "unless it's a drinking day", false),
+			new TodoPage.Todo("listen to some tunes", "https://youtu.be/kTmZnQOfAF8", true)
+		};
+		list.AddRange(collection);
+	}
+	List&lt;TodoPage.Todo&gt; list2 = new List&lt;TodoPage.Todo&gt;();
+	foreach (TodoPage.Todo todo in list)
+	{
+		if (!todo.Done)
+		{
+			list2.Add(todo);
+		}
+	}
+	this.mylist.ItemsSource = list2;
+	App.Note = list2[0].Note;
+}</pre>
+
+
+
+<p>From this we can deduce that the note will contain the following string:</p>
+
+
+
+<pre class="wp-block-code"><code>keep steaks for dinner
+</code></pre>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#appstep"></a>App.Step</h2>
+
+
+
+<p>We already have seen the place where <code>App.Step</code> is assigned, namely in <code>PedDataUpdate</code>. The data comes from the application’s metadata with the key <code>its</code>. Metadata like this is stored in the application’s manifest:</p>
+
+
+
+<pre class="wp-block-preformatted">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest package="com.flare-on.TKApp" version="1.0.0" api-version="5.5" xmlns="http://tizen.org/ns/packages"&gt;
+    &lt;author href="http://www.flare-on.com" /&gt;
+    &lt;profile name="wearable" /&gt;
+    &lt;ui-application appid="com.flare-on.TKApp" exec="TKApp.dll" multiple="false" nodisplay="false" taskmanage="true" api-version="6" type="dotnet" launch_mode="single"&gt;
+        &lt;label&gt;TKApp&lt;/label&gt;
+        &lt;icon&gt;TKApp.png&lt;/icon&gt;
+        &lt;metadata key="http://tizen.org/metadata/prefer_dotnet_aot" value="true" /&gt;
+        &lt;metadata key="its" value="magic" /&gt;
+        &lt;splash-screens /&gt;
+    &lt;/ui-application&gt;
+    &lt;shortcut-list /&gt;
+    &lt;privileges&gt;
+        &lt;privilege&gt;http://tizen.org/privilege/location&lt;/privilege&gt;
+        &lt;privilege&gt;http://tizen.org/privilege/healthinfo&lt;/privilege&gt;
+    &lt;/privileges&gt;
+    &lt;dependencies /&gt;
+    &lt;provides-appdefined-privileges /&gt;
+&lt;/manifest&gt;</pre>
+
+
+
+<p>Here we can see the string is set to</p>
+
+
+
+<pre class="wp-block-code"><code>magic
+</code></pre>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#appdesc"></a>App.Desc</h2>
+
+
+
+<p>Looking at the places where this property is set in the analyzer, we can find one reference to it in <code>IndexPage_CurrentPageChanged</code> of the <code>GalleryPage</code> class:</p>
+
+
+
+<pre class="wp-block-preformatted">private void IndexPage_CurrentPageChanged(object sender, EventArgs e)
+{
+	if (base.Children.IndexOf(base.CurrentPage) == 4)
+	{
+		using (ExifReader exifReader = new ExifReader(Path.Combine(Application.Current.DirectoryInfo.Resource, "gallery", "05.jpg")))
+		{
+			string desc;
+			if (exifReader.GetTagValue&lt;string&gt;(ExifTags.ImageDescription, out desc))
+			{
+				App.Desc = desc;
+			}
+			return;
+		}
+	}
+	App.Desc = "";
+}</pre>
+
+
+
+<p>We can see it obtains the description of an image. We can simply copy
+ the iamge and this code (don’t forget to include the reference <code>ExifLib.Standard.dll</code>) to obtain this value:</p>
+
+
+
+<pre class="wp-block-code"><code>water
+</code></pre>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/5#conclusion"></a>Conclusion</h2>
+
+
+
+<p>We now have everything to decrypt <code>Runtime.dll</code>. Copy 
+&amp; paste the decryption routine, together with all the values we 
+found, we find that the resulting byte array is an image, revealing the 
+flag:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/5/output.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/output.png" alt="Figure 3"></a></figure>
+
+
+
+<h1 id="6---report">6 – report</h1>
+
+
+
+<p><strong>Time spent:</strong> 3 hours</p>
+
+
+
+<p><strong>Tools used:</strong> Detect It Easy, exe2aut, Python</p>
+
+
+
+<p>The sixth challenge is called codeit, a simple application that asks 
+you for some input which is transformed into a QR code and displayed. 
+The note tells us that if a special string is given, the QR code of the 
+flag would be generated.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/gui1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/gui1.png" alt="Figure 1"></a></figure>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/6#orientation"></a>Orientation</h2>
+
+
+
+<p>If we drag this application into a program like Detect It Easy, we 
+can quickly see that this program is UPX packed, and underneath it, an 
+AutoIt program is conceiled.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/die.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/die.png" alt="Figure 2"></a></figure>
+
+
+
+<p>There’s tons of tools around on the internet to extract the original script out of this program. I used <a href="http://domoticx.com/autoit3-decompiler-exe2aut/">Exe2Aut</a>:</p>
+
+
+
+<pre class="wp-block-code"><code>Exe2Aut.exe codeit.exe
+</code></pre>
+
+
+
+<p>This extracts three files:</p>
+
+
+
+<ul><li><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/codeit_.au3">codeit_au3</a>: The main script.</li><li><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/qr_encoder.dll">qr_encoder.dll</a>: A dll used for generating QR images.</li><li><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/sprite.bmp">sprite.bmp</a>: The initial image that is displayed.</li></ul>
+
+
+
+<p>Although it is probably more readable than x86 code, the script is 
+obfuscated by renaming all variables and functions to random strings, 
+and replacing all constants with some string decoder function call or a 
+random global variable.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/6#deobfuscating-all-constants"></a>Deobfuscating all constants</h2>
+
+
+
+<p>The first thing to notice is that the program declares a lot of global variables that are assigned exactly once (lines 134-158).</p>
+
+
+
+<pre class="wp-block-preformatted">Global $flavekolca = Number(" 0 "), $flerqqjbmh = Number(" 1 "), $flowfrckmw = Number(" 0 "), $flmxugfnde = Number(" 0 "), $flvjxcqxyn = Number(" 2 "), $flddxnmrkh = Number(" 0 "), $flroseeflv = Number(" 1 "), $flpgrglpzm = Number(" 0 "), $flvzrkqwyg = Number(" 0 "), $flyvormnqr = Number(" 0 "), $flvthbrbxy = Number(" 1 "), $flxttxkikw = Number(" 0 "), $flgjmycrvw = Number(" 1 "), $flceujxgse = Number(" 0 "), $flhptoijin = Number(" 0 "), $flrzplgfoe = Number(" 0 "), $fliboupial = Number(" 0 "), $flidavtpzc = Number(" 1 "), $floeysmnkq = Number(" 1 "), $flaibuhicd = Number(" 0 "), $flekmapulu = Number(" 1 ")
+...</pre>
+
+
+
+<p>Furthermore, we also see a global variable <code>os</code> declared at line 133 that is used a lot throughout the entire program as an argument for the <code>arehdidxrgk</code> function. Looking at where this variable is assigned a value (line 557), we can see it is an array of encoded strings, and <code>arehdidxrgk</code> is the decoder for it:</p>
+
+
+
+<pre class="wp-block-preformatted">Func arehdidxrgk($flqlnxgxbp)
+	Local $flqlnxgxbp_
+	For $flrctqryub = 1 To StringLen($flqlnxgxbp) Step 2
+		$flqlnxgxbp_ &amp;= Chr(Dec(StringMid($flqlnxgxbp, $flrctqryub, 2)))
+	Next
+	Return $flqlnxgxbp_
+EndFunc</pre>
+
+
+
+<p>With this in mind, and some regex selection, we can make a simple 
+python script that does a find and replace in the original source code. 
+The script can be found <a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/deobfuscate.py">here</a>. After we ran it, we can remove the remnants of the global variable declarations, and we end up with a script like <a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/output.au3">here</a>.</p>
+
+
+
+<h2><a href="https://github.com/Washi1337/ctf-writeups/tree/master/FlareOn/2020/6#the-detective-work"></a>The detective work</h2>
+
+
+
+<p>Now the real fun starts. If you use an editor like Visual Studio Code, you can easily collapse all functions using <code>Ctrl+K+0</code>. Doing this gives us a good overview of the complete program.</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/code1.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/code1.png" alt="Figure 3"></a></figure>
+
+
+
+<p>Furthermore, a lot of functions are small enough to quickly figure 
+out what is going on, just by looking at the strings that are used in 
+these functions. Renaming them will help a lot in seeing the bigger 
+picture of the program, and so therefore I did.</p>
+
+
+
+<ul><li><strong>areuznaqfmn</strong> -&gt; kernel32.dll!GetComputerNameA</li><li><strong>arerujpvsfp</strong> -&gt; kernel32.dll!CreateFile</li><li><strong>aremyfdtfqp</strong> -&gt; kernel32.dll!CreateFile</li><li><strong>aremfkxlayv</strong> -&gt; kernel32.dll!SetFilePointer followed by kernel32!WriteFile</li><li><strong>aremlfozynu</strong> -&gt; kernel32.dll!ReadFile</li><li><strong>arevtgkxjhu</strong> -&gt; kernel32.dll!CloseHandle</li><li><strong>arebbytwcoj</strong> -&gt; kernel32.dll!DeleteFileA</li></ul>
+
+
+
+<p>Now that those are out of the way, let’s have a look at the main function:</p>
+
+
+
+<pre class="wp-block-preformatted">Func MessageLoop()
+    ;- ...
+    
+	While 1
+		Switch GUIGetMsg()
+			Case $confirm_button
+				;- If confirm button clicked...
+
+				Local $inputText = GUICtrlRead($input_textbox)
+				If $inputText Then
+					;~ Set up QR encoder parameters.
+					Local $qrencoderPath = get_file_path(26)
+					Local $qrparameters = DllStructCreate("struct;dword;dword;byte[3918];endstruct")
+					Local $result = DllCall($qrencoderPath, "int:cdecl", "justGenerateQRSymbol", "struct*", $qrparameters, "str", $inputText)
+
+					If $result[0] &lt;&gt; 0 Then
+						;~ Some magic???
+						MAGICFUNCTION($qrparameters)
+
+						;~ Create bitmap
+						Local $flbvokdxkg = CreateBitmapStruct((DllStructGetData($qrparameters, 1) * DllStructGetData($qrparameters, 2)), (DllStructGetData($qrparameters, 1) * DllStructGetData($qrparameters, 2)), 1024)
+						$result = DllCall($qrencoderPath, "int:cdecl", "justConvertQRSymbolToBitmapPixels", "struct*", $qrparameters, "struct*", $flbvokdxkg[1])
+						If $result[0] &lt;&gt; 0 Then
+							;~ Write image.
+							$sprite_bmp_file = random_string(25, 30) &amp; ".bmp"
+							arelassehha($flbvokdxkg, $sprite_bmp_file)
+						EndIf
+					EndIf
+					kernel32DeleteFileA($qrencoderPath)
+				Else
+					$sprite_bmp_file = get_file_path(11)
+				EndIf
+				
+				;~ Update image in window.
+				GUICtrlSetImage($picturebox, $sprite_bmp_file)
+				kernel32DeleteFileA($sprite_bmp_file)
+    ;- ...</pre>
+
+
+
+<p>We can see a typical win32 message loop, where we wait for a button 
+click event. If it is triggered, we grab the text of the input text box,
+ set up the parameters for the call to <code>qr_encoder.dll</code>, do the call to <code>justConvertQRSymbolToBitmapPixels</code>,
+ and then eventually display the generated image. But before we transfer
+ control to the external dll, we call a mysterious function, which I 
+called <code>MAGICFUNCTION</code>, that seems to take the qr code parameters, including the input text. Let’s have a look:</p>
+
+
+
+<pre class="wp-block-preformatted">Func MAGICFUNCTION(ByRef $inputOutput)
+	Local $computerName = kernel32GetComputerName()
+	
+	If $computerName &lt;&gt; -1 Then
+		;~ Preprocess computer name bytes .
+		$computerName = Binary(StringLower(BinaryToString($computerName)))
+		Local $computerNameraw = DllStructCreate("struct;byte[" &amp; BinaryLen($computerName) &amp; "];endstruct")
+		DllStructSetData($computerNameraw, 1, $computerName)
+		DecodeFile($computerNameraw)
+
+		Local $phPov = DllStructCreate("struct;ptr;ptr;dword;byte[32];endstruct")
+		DllStructSetData($phPov, 3, 32)
+		Local $result = DllCall("advapi32.dll", "int", "CryptAcquireContextA", ...)
+		If $result[0] &lt;&gt; 0 Then
+			$result = DllCall("advapi32.dll", "int", "CryptCreateHash", ...)
+			If $result[0] &lt;&gt; 0 Then
+				$result = DllCall("advapi32.dll", "int", "CryptHashData", ...)
+				If $result[0] &lt;&gt; 0 Then
+					$result = DllCall("advapi32.dll", "int", "CryptGetHashParam", ...)
+					If $result[0] &lt;&gt; 0 Then
+						Local $keydata = Binary("0x" &amp; "08020" &amp; "00010" &amp; "66000" &amp; "02000" &amp; "0000") &amp; DllStructGetData($phPov, 4)
+						;~ Keydata now contains the sha256 of the transformed computer name, plus a prefix.
+
+						Local $ciphertext = Binary(...)
+
+						;~ Set up decryption key based off of key data.
+						Local $buffer = DllStructCreate("struct;ptr;ptr;dword;byte[8192];byte[" &amp; BinaryLen($keydata) &amp; "];dword;endstruct")
+						DllStructSetData($buffer, 3, BinaryLen($ciphertext))
+						DllStructSetData($buffer, 4, $ciphertext)
+						DllStructSetData($buffer, 5, $keydata)
+						DllStructSetData($buffer, 6, BinaryLen($keydata))
+
+						Local $result = DllCall("advapi32.dll", "int", "CryptAcquireContextA",...)
+						If $result[0] &lt;&gt; 0 Then
+							$result = DllCall("advapi32.dll", "int", "CryptImportKey", ...)
+							If $result[0] &lt;&gt; 0 Then
+								$result = DllCall("advapi32.dll", "int", "CryptDecrypt", ...)
+								If $result[0] &lt;&gt; 0 Then
+									;~ If decryption successful...
+									Local $flsekbkmru = BinaryMid(DllStructGetData($buffer, 4), 1, DllStructGetData($buffer, 3))
+
+									$FLARE = Binary("FLARE")
+									$ERALF = Binary("ERALF")
+									$flgggftges = BinaryMid($flsekbkmru, 1, BinaryLen($FLARE))
+									$flnmiatrft = BinaryMid($flsekbkmru, BinaryLen($flsekbkmru) - BinaryLen($ERALF) + 1, BinaryLen($ERALF))
+									If $FLARE = $flgggftges AND $ERALF = $flnmiatrft Then
+										;~ Update the qr parameters to display the decrypted data.
+										DllStructSetData($inputOutput, 1, BinaryMid($flsekbkmru, 6, 4))
+										DllStructSetData($inputOutput, 2, BinaryMid($flsekbkmru, 10, 4))
+										DllStructSetData($inputOutput, 3, BinaryMid($flsekbkmru, 14, BinaryLen($flsekbkmru) - 18))
+                                        
+    ;- ...</pre>
+
+
+
+<p>That’s a big function! If we go over it step by step, we can see the 
+computer name is acquired, then some preprocessing is done, and after 
+that, it is used as part of a decryption key for a whole bunch of 
+complicated cryptography (SHA256 and RSA) that we most likely cannot 
+break. If, however, the decryption succeeds, the QR parameters are 
+updated. So we know that this is the place to look.</p>
+
+
+
+<p>It seems though, that the decryption routine does not really rely on 
+the input text that was given in the input box, but rather on the 
+computer name. Let’s have a look at the preprocessing of the computer 
+name, see if we can find some clues there:</p>
+
+
+
+<pre class="wp-block-preformatted">Func DecodeFile(ByRef $cipherTextBuffer)	
+	;- Open sprite.bmp
+	Local $spritebmppath = get_file_path(14)
+	Local $handle = kernel32CreateFile($spritebmppath)
+	If $handle &lt;&gt; -1 Then
+		Local $fileSize = kernel32GetFileSize($handle)
+		If $fileSize &lt;&gt; -1 AND DllStructGetSize($cipherTextBuffer) &lt; $fileSize - 54 Then
+			;- Read file contents.
+			Local $buffer = DllStructCreate("struct;byte[" &amp; $fileSize &amp; "];endstruct")
+			Local $flskuanqbg = kernel32ReadFile($handle, $buffer)
+			If $flskuanqbg &lt;&gt; -1 Then
+				;- Skip the first 54 bytes (bmp header).
+				Local $flxmdchrqd = DllStructCreate("struct;byte[54];byte[" &amp; $fileSize - 54 &amp; "];endstruct", DllStructGetPtr($buffer))
+				Local $counter = 1
+				Local $result = ""
+
+				;- Build up a result string based on the input computer name and pixel data in sprite.bmp.
+				For $i = 1 To DllStructGetSize($cipherTextBuffer)
+					Local $currentChar = Number(DllStructGetData($cipherTextBuffer, 1, $i))
+					For $j = 6 To 0 Step -1
+						$currentChar += BitShift(BitAND(Number(DllStructGetData($flxmdchrqd, 2, $counter)), 1), -1 * $j)
+						$counter += 1
+					Next
+					$result &amp;= Chr(BitShift($currentChar, 1) + BitShift(BitAND($currentChar, 1), -7))
+				Next
+				DllStructSetData($cipherTextBuffer, 1, $result)
+			EndIf
+		EndIf
+		kernel32CloseHandle($handle)
+	EndIf
+	kernel32DeleteFileA($spritebmppath)
+EndFunc</pre>
+
+
+
+<p>Interesting! We are reading some hidden data from <code>sprite.bmp</code>, 7 pixels per character. ASCII is a 7-bit character encoding, so that seems like a good guess. Let’s write a <a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/lsb.py">python script</a> that simulates it:</p>
+
+
+
+<pre class="wp-block-preformatted">with open("sprite.bmp", "rb") as f:
+    data = f.read()
+
+result = []
+current = ""
+for j in range(0x36, 0x100):
+    bit = data[j] &amp; 1
+    current += str(bit)
+    if len(current) == 7:
+        result.append(current)
+        current = ""
+
+print(result)
+print("".join([chr(int(x, 2)) for x in result]))</pre>
+
+
+
+<p>Resulting in :</p>
+
+
+
+<pre class="wp-block-code"><code>$ python lsb.py
+['1100001', '1110101', '1110100', '0110000', '0110001', '1110100', '1100110', '1100001', '1101110', '0110001', '0111001', '0111001', '0111001', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111', '1111111']
+aut01tfan1999⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂
+</code></pre>
+
+
+
+<p>If we replace the computer name with the string <code>aut01tfan1999</code>, we can observe that the decryption succeeds, and a different QR is displayed:</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/gui2.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/gui2.png" alt="Figure 4"></a></figure>
+
+
+
+<p>Scanning the resulting QR code with a phone…</p>
+
+
+
+<figure class="wp-block-image"><a href="https://github.com/Washi1337/ctf-writeups/blob/master/FlareOn/2020/6/scan.png" target="_blank" rel="noreferrer noopener"><img src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/scan.png" alt="Figure 5"></a></figure>
+
+
+
+<p>… reveals the flag:</p>
+
+
+
+<pre class="wp-block-code"><code>L00ks_L1k3_Y0u_D1dnt_Run_Aut0_Tim3_0n_Th1s_0ne!@flare-on.com
+</code></pre>
+
+
+
+<p><strong>To be continued…</strong></p>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><img alt="" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/tonyweb-photo-thumb-2681-49x49.png" srcset="http://tonyweb.xyz/wp-content/uploads/2020/11/tonyweb-photo-thumb-2681-98x98.png 2x" class="avatar avatar-49 photo" width="49" height="49"><span class="screen-reader-text">Author </span> <a class="url fn n" href="http://tonyweb.xyz/index.php/author/tonyweb/">TonyWeb</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="http://tonyweb.xyz/index.php/2020/11/07/flare-on-2020-solutions-write-ups/" rel="bookmark"><time class="entry-date published" datetime="2020-11-07T22:49:29+00:00">November 7, 2020</time><time class="updated" datetime="2020-11-08T22:41:31+00:00">November 8, 2020</time></a></span><span class="tags-links"><span class="screen-reader-text">Tags </span><a href="http://tonyweb.xyz/index.php/tag/antonio/" rel="tag">antonio</a>, <a href="http://tonyweb.xyz/index.php/tag/beta-bbs/" rel="tag">beta-bbs</a>, <a href="http://tonyweb.xyz/index.php/tag/flare-on/" rel="tag">flare-on</a>, <a href="http://tonyweb.xyz/index.php/tag/tonyweb/" rel="tag">tonyweb</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+
+<div id="comments" class="comments-area">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://tonyweb.xyz/index.php/2020/11/07/flare-on-2020-solutions-write-ups/#respond" style="display:none;">Cancel reply</a></small></h2>			<form action="http://tonyweb.xyz/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="27" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>			</form>
+			</div><!-- #respond -->
+	
+</div><!-- .comments-area -->
+
+	<nav class="navigation post-navigation" role="navigation">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="http://tonyweb.xyz/index.php/2020/11/07/cracking-net-components/" rel="prev"><span class="meta-nav" aria-hidden="true">Previous</span> <span class="screen-reader-text">Previous post:</span> <span class="post-title">Cracking .NET Components</span></a></div><div class="nav-next"><a href="http://tonyweb.xyz/index.php/2020/11/08/sparklabs-viscosity-openvpn-client-v1-5-1-8-4-keygen/" rel="next"><span class="meta-nav" aria-hidden="true">Next</span> <span class="screen-reader-text">Next post:</span> <span class="post-title">Sparklabs Viscosity OpenVPN Client v1.5-1.8.4 Keygen by TonyWeb</span></a></div></div>
+	</nav>
+	</main><!-- .site-main -->
+
+	
+</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="pages-3" class="widget widget_pages"><h2 class="widget-title">About This Site</h2>		<ul>
+			<li class="page_item page-item-1"><a href="http://tonyweb.xyz/index.php/hello-world/">Tonyweb (Antonio’s) Reverse Engineering Site</a></li>
+		</ul>
+			</section>		<section id="recent-posts-6" class="widget widget_recent_entries">		<h2 class="widget-title">Recent Posts</h2>		<ul>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/congratulations-to-aaron-founder-of-the-exetools-forum/">Congratulations to Aaron, Founder of the Exetools Forum</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/redshift-8-premium-by-heavendenied-betabbs-forum/">Redshift 8 Premium by HeavenDenied (BetaBBS forum)</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/ncp-secure-communication-products-keygen-by-tonyweb/">NCP Secure Communication Products KEYGEN by Tonyweb</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/eset-eav-eis-essp-v13-2-15-0-eset-smart-security-cracks-by-tonyweb/">ESET EAV &amp; EIS &amp; ESSP v13.2.15.0: ESET Smart Security Cracks by Tonyweb</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/how-to-crack-io-bureau-bvckup-2-release-81-by-tonyweb/">How to Crack IO Bureau – Bvckup 2 Release 81 by TonyWeb</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/radiant-dicom-viewer-v2020-1-1-part-2-trial-trick/">RadiAnt DICOM Viewer v2020.1.1 Part 2 – Trial trick</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/radiant-dicom-viewer-v2020-1-1-cracking-by-tonyweb/">RadiAnt DICOM Viewer v2020.1.1 Cracking by Tonyweb – Part 1</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/08/sparklabs-viscosity-openvpn-client-v1-5-1-8-4-keygen/">Sparklabs Viscosity OpenVPN Client v1.5-1.8.4 Keygen by TonyWeb</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/07/flare-on-2020-solutions-write-ups/">Flare-On 2020 Solutions Write-Ups</a>
+									</li>
+											<li>
+					<a href="http://tonyweb.xyz/index.php/2020/11/07/cracking-net-components/">Cracking .NET Components</a>
+									</li>
+					</ul>
+		</section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="http://tonyweb.xyz/" rel="home">Tonyweb (Antonio's) Reverse Engineering Cracks and Tuts</a></span>
+								<a href="https://wordpress.org/" class="imprint">
+					Proudly powered by WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+<script type="text/javascript" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/comment-reply.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/functions.js"></script>
+<script type="text/javascript" src="Flare-On%202020%20Solutions%20Write-Ups%20%E2%80%93%20Tonyweb%20(Antonio's)%20Reverse%20Engineering%20Cracks%20and%20Tuts_files/wp-embed.js"></script>
+
+
+</body></html>
